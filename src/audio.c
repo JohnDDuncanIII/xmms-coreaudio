@@ -257,6 +257,15 @@ gint osx_get_written_time(void)
 gint osx_get_output_time(void)
 {
 	gint retval;
+	user_pitch = 1.0;
+	//printf("osx_get_output_time(): output.bps is %d\n", output.bps);
+	//printf("osx_get_output_time(): user_pitch is %d\n", user_pitch);
+
+	// If you can't get the bps from the file (this seems to happen with my mp3 files on 10.11)
+	//    ... set to some arbitrary value of 320kbps. This prevents SIGFPE segfault..
+	if(output.bps == 0) {
+		output.bps = 320000;
+	}
 
 	retval = output_time_offset + ((output_total * sample_size * 1000) / output.bps);
 	retval = (int)((float)retval / user_pitch);
