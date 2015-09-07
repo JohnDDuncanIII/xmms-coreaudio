@@ -1,0 +1,11 @@
+XMMS OSX Output Plugin
+======================
+
+This distribution contains an OSX native output plugin for xmms.
+
+It is commpatible with all audio formats supported by xmms.
+
+While this distribution is distributed using the DBMix project
+on sourceforge, it does not as yet support any DBMix functionality.
+
+

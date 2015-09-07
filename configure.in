@@ -1,0 +1,57 @@
+AC_INIT(src/OSX.c)
+
+AM_CONFIG_HEADER(config.h)
+
+AM_INIT_AUTOMAKE(xmms_osx_plugin, 1.0)
+
+AM_MAINTAINER_MODE
+
+AC_PROG_CC
+AC_ISC_POSIX
+AM_PROG_LIBTOOL
+
+
+AC_ARG_PROGRAM
+AC_HEADER_STDC
+
+AC_CHECK_HEADER(pthread.h,,AC_MSG_ERROR([*** POSIX thread support not installed - please install first ***]))
+
+AM_PATH_GLIB(1.2.0,,AC_MSG_ERROR([*** GLIB >= 1.2.2 not installed - please install first ***]))
+AM_PATH_GTK(1.2.0,,AC_MSG_ERROR([*** GTK+ >= 1.2.2 not installed - please install first ***]),gthread)
+AM_PATH_XMMS(1.2.0,,AC_MSG_ERROR([*** XMMS >= 1.2.0 not installed - please install first ***]))
+
+
+echo ""
+AC_CHECK_LIB(FunkyMusic.so,white_boys, , [
+echo "Warning: You may not have enough white boys to play your funky music.
+         Please obtain additional funky white boys."
+])
+echo ""
+
+AC_ARG_ENABLE(debug,[  --enable-debug          enable debug options (optional)],,debug_enable=yes)
+
+if test "x$debug_enable" = "x$yes"
+then
+	XMMS_OSX_DEBUG="-DXMMS_OSX_DEBUG -g -Wall"
+else
+
+	XMMS_OSX_DEBUG=
+fi
+
+AC_SUBST(XMMS_OSX_DEBUG)
+
+
+PLUGIN_LDFLAGS='-module -avoid-version -export-symbols-regex "get_.plugin_info"'
+AC_SUBST(PLUGIN_LDFLAGS)
+
+AC_SUBST(VISUALIZATION_PLUGIN_DIR)
+AC_SUBST(GENERAL_PLUGIN_DIR)
+
+AC_OUTPUT([
+Makefile
+src/Makefile
+])
+
+echo ""
+echo "XMMS OSX Plugin will be installed in: $XMMS_OUTPUT_PLUGIN_DIR"
+echo ""
